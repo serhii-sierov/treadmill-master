@@ -3,18 +3,20 @@ import { StyleSheet, Text, View } from 'react-native';
 import { SegmentRow } from '@/components/SegmentRow';
 import Colors from '@/constants/Colors';
 import type { InclineUnit } from '@/constants/TreadmillSettings';
+import type { TreadmillState } from '@/core/treadmill/types';
 import type { Program } from '@/features/programs/types';
 import type { WorkoutProgress } from '@/features/workout/types';
 
 interface WorkoutSegmentListProps {
   program: Program | null;
   workout: WorkoutProgress | null;
+  treadmill: TreadmillState;
   inclineUnit: InclineUnit;
   colors: (typeof Colors)['light'];
 }
 
 export function WorkoutSegmentList(props: Readonly<WorkoutSegmentListProps>) {
-  const { program, workout, inclineUnit, colors } = props;
+  const { program, workout, treadmill, inclineUnit, colors } = props;
 
   if (!program) {
     return null;
@@ -29,6 +31,7 @@ export function WorkoutSegmentList(props: Readonly<WorkoutSegmentListProps>) {
           segment={segment}
           index={index}
           active={workout?.segmentIndex === index}
+          treadmill={workout?.isActive && workout.segmentIndex === index ? treadmill : undefined}
           inclineUnit={inclineUnit}
         />
       ))}

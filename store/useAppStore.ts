@@ -35,4 +35,6 @@ export const useAppStore = create<AppStore>((set, get, api) => ({
 
 syncTreadmillStateToStore((partial) => {
   useAppStore.setState(partial);
+  useAppStore.getState().checkTreadmillInterruption();
+  useAppStore.getState().syncWorkoutSessionMetrics();
 });

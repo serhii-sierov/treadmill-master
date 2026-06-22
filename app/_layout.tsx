@@ -57,6 +57,13 @@ function RootLayoutNav() {
           }}
         />
         <Stack.Screen
+          name="session/[id]"
+          options={{
+            title: "Workout details",
+            headerBackTitle: "Dashboard",
+          }}
+        />
+        <Stack.Screen
           name="modal"
           options={{ presentation: "modal", title: "About" }}
         />

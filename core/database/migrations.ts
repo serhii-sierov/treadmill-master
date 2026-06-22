@@ -10,4 +10,11 @@ export async function runMigrations(db: SQLite.SQLiteDatabase): Promise<void> {
       )
     `);
   }
+
+  const sessionColumns = await db.getAllAsync<{ name: string }>('PRAGMA table_info(sessions)');
+  if (!sessionColumns.some((column) => column.name === 'session_log_json')) {
+    await db.execAsync(
+      "ALTER TABLE sessions ADD COLUMN session_log_json TEXT NOT NULL DEFAULT '[]'",
+    );
+  }
 }

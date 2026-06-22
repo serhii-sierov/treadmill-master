@@ -3,18 +3,21 @@ import { StyleSheet, Text, View } from 'react-native';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import type { InclineUnit } from '@/constants/TreadmillSettings';
+import type { TreadmillState } from '@/core/treadmill/types';
 import type { Segment } from '@/features/programs/types';
+import { formatSegmentTargetsWithActual } from '@/features/workout/format-segment-targets';
 import { formatDuration, formatIncline, formatSpeed } from '@/utils/format';
 
 interface SegmentRowProps {
   segment: Segment;
   index: number;
   active?: boolean;
+  treadmill?: TreadmillState;
   inclineUnit?: InclineUnit;
 }
 
 export function SegmentRow(props: Readonly<SegmentRowProps>) {
-  const { segment, index, active, inclineUnit = 'level' } = props;
+  const { segment, index, active, treadmill, inclineUnit = 'level' } = props;
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme];
 
@@ -36,7 +39,14 @@ export function SegmentRow(props: Readonly<SegmentRowProps>) {
       <View style={styles.metrics}>
         <Text style={[styles.metric, { color: colors.text }]}>{formatDuration(segment.durationSeconds)}</Text>
         <Text style={[styles.metric, { color: colors.muted }]}>
-          {formatSpeed(segment.speedKmh)} · {formatIncline(segment.inclinePercent, inclineUnit)}
+          {treadmill
+            ? formatSegmentTargetsWithActual(
+                segment.speedKmh,
+                segment.inclinePercent,
+                treadmill,
+                inclineUnit,
+              )
+            : `${formatSpeed(segment.speedKmh)} · incline ${formatIncline(segment.inclinePercent, inclineUnit)}`}
         </Text>
       </View>
     </View>

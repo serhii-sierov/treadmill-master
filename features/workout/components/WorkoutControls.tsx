@@ -19,11 +19,15 @@ export function WorkoutControls(props: Readonly<WorkoutControlsProps>) {
     <View style={styles.controls}>
       {workout?.isActive ? (
         <>
-          <PrimaryButton
-            label={workout.isPaused ? 'Resume' : 'Pause'}
-            onPress={onPauseResume}
-            colors={colors}
-          />
+          {workout.isInterrupted ? (
+            <PrimaryButton label="Continue workout" onPress={onPauseResume} colors={colors} />
+          ) : (
+            <PrimaryButton
+              label={workout.isPaused ? 'Resume' : 'Pause'}
+              onPress={onPauseResume}
+              colors={colors}
+            />
+          )}
           <Pressable
             onPress={onStop}
             style={[styles.dangerButton, { borderColor: colors.danger, backgroundColor: colors.card }]}>

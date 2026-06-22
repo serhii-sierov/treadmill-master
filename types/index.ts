@@ -7,7 +7,7 @@ export type {
 } from '@/features/programs/types';
 
 /** @deprecated Import from `@/features/workout/types`. */
-export type { WorkoutProgress, WorkoutSession } from '@/features/workout/types';
+export type { WorkoutProgress, WorkoutSession, SessionSegmentLogEntry } from '@/features/workout/types';
 
 /** @deprecated Import from `@/core/treadmill/types`. */
 export type {

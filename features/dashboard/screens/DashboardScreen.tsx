@@ -1,6 +1,7 @@
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect, useRouter, type Href } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SymbolView } from 'expo-symbols';
 
 import { StatCard } from '@/components/StatCard';
 import { WeeklyChart } from '@/components/WeeklyChart';
@@ -13,10 +14,12 @@ import { formatDistance, formatDuration } from '@/utils/format';
 import { fireAndForgetAlert } from '@/utils/fire-and-forget';
 
 export function DashboardScreen() {
+  const router = useRouter();
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme];
   const hydrate = useAppStore((state) => state.hydrate);
   const hydrated = useAppStore((state) => state.hydrated);
+  const deleteSession = useAppStore((state) => state.deleteSession);
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -38,6 +41,26 @@ export function DashboardScreen() {
       fireAndForgetAlert(refreshStats(), 'Could not load statistics');
     }, [refreshStats]),
   );
+
+  const handleDeleteSession = (session: DashboardStats['recentSessions'][number]) => {
+    Alert.alert(
+      'Delete workout',
+      `Remove "${session.programName}" from your history? Your statistics will be updated.`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            fireAndForgetAlert(
+              deleteSession(session.id).then(refreshStats),
+              'Delete failed',
+            );
+          },
+        },
+      ],
+    );
+  };
 
   if (!hydrated || loading || !stats) {
     return (
@@ -113,20 +136,39 @@ export function DashboardScreen() {
           <View
             key={session.id}
             style={[styles.sessionCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
-            <View>
-              <Text style={[styles.sessionTitle, { color: colors.text }]}>{session.programName}</Text>
-              <Text style={[styles.sessionMeta, { color: colors.muted }]}>
-                {new Date(session.startedAt).toLocaleDateString()}
-              </Text>
-            </View>
-            <View style={styles.sessionStats}>
-              <Text style={[styles.sessionValue, { color: colors.text }]}>
-                {formatDuration(session.totalDurationSeconds)}
-              </Text>
-              <Text style={[styles.sessionMeta, { color: colors.muted }]}>
-                {formatDistance(session.distanceKm)} · {session.completed ? 'Done' : 'Partial'}
-              </Text>
-            </View>
+            <Pressable
+              onPress={() =>
+                router.push({ pathname: '/session/[id]', params: { id: session.id } } as unknown as Href)
+              }
+              style={styles.sessionMain}>
+              <View>
+                <Text style={[styles.sessionTitle, { color: colors.text }]}>{session.programName}</Text>
+                <Text style={[styles.sessionMeta, { color: colors.muted }]}>
+                  {new Date(session.startedAt).toLocaleDateString()}
+                  {session.segmentLog.length > 0 ? ` · ${session.segmentLog.length} segments` : ''}
+                </Text>
+              </View>
+              <View style={styles.sessionStats}>
+                <Text style={[styles.sessionValue, { color: colors.text }]}>
+                  {formatDuration(session.totalDurationSeconds)}
+                </Text>
+                <Text style={[styles.sessionMeta, { color: colors.muted }]}>
+                  {formatDistance(session.distanceKm)} · {session.completed ? 'Done' : 'Partial'}
+                </Text>
+              </View>
+            </Pressable>
+            <Pressable
+              onPress={() => handleDeleteSession(session)}
+              hitSlop={8}
+              accessibilityLabel={`Delete ${session.programName} workout`}
+              accessibilityRole="button"
+              style={styles.deleteButton}>
+              <SymbolView
+                name={{ ios: 'trash', android: 'delete', web: 'delete' }}
+                size={18}
+                tintColor={colors.danger}
+              />
+            </Pressable>
           </View>
         ))
       )}
@@ -197,9 +239,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 14,
     flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  sessionMain: {
+    flex: 1,
+    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     gap: 12,
+  },
+  deleteButton: {
+    padding: 4,
   },
   sessionTitle: {
     fontSize: 16,

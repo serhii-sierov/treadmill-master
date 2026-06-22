@@ -1,19 +1,38 @@
 import type { Program, Segment } from '@/features/programs/types';
 import { treadmillAdapter } from '@/core/treadmill';
+import type { TreadmillState } from '@/core/treadmill/types';
 import type { WorkoutProgress } from '@/features/workout/types';
 
-export async function applySegmentToTreadmill(segment: Segment): Promise<void> {
-  await treadmillAdapter.setSpeed(segment.speedKmh);
-  await treadmillAdapter.setIncline(segment.inclinePercent);
+export { getWorkoutSessionStats } from '@/features/workout/session-metrics';
+
+export const BELT_START_GRACE_MS = 6000;
+export const BELT_SEGMENT_GRACE_MS = 2500;
+/** FitShow-style treadmills reboot (888888888 display test) after safety key reset. */
+export const SAFETY_KEY_RESUME_GRACE_MS = 15000;
+export const SAFETY_KEY_PRE_RESUME_DELAY_MS = 2500;
+
+export function isTreadmillBeltStopped(treadmill: TreadmillState): boolean {
+  return !treadmill.isRunning && treadmill.speedKmh < 0.5;
 }
 
-/** Set segment targets, start the belt, then re-apply targets (FTMS often ignores pre-start values). */
-export async function startSegmentOnTreadmill(segment: Segment): Promise<void> {
-  await applySegmentToTreadmill(segment);
-  await treadmillAdapter.start();
-  if (treadmillAdapter.getMode() === 'ble') {
-    await applySegmentToTreadmill(segment);
-  }
+export async function applySegmentToTreadmill(segment: Segment): Promise<void> {
+  await treadmillAdapter.applySegmentTargets(segment.speedKmh, segment.inclinePercent);
+}
+
+/** FTMS cold start: Start → wait → set targets → Start (required after any belt stop). */
+export async function startSegmentOnTreadmill(
+  segment: Segment,
+  options?: { forceColdStart?: boolean },
+): Promise<void> {
+  await treadmillAdapter.startSegment(segment.speedKmh, segment.inclinePercent, options);
+}
+
+export function shouldMonitorBeltStop(workout: WorkoutProgress): boolean {
+  return workout.isActive && !workout.isPaused && !workout.isInterrupted;
+}
+
+export function isWithinBeltCheckGrace(workout: WorkoutProgress, now = Date.now()): boolean {
+  return now < (workout.beltCheckGraceUntil ?? 0);
 }
 
 export function getCurrentSegment(program: Program, progress: WorkoutProgress): Segment | null {
@@ -38,14 +57,4 @@ export function getOverallProgressPercent(program: Program, progress: WorkoutPro
     return 0;
   }
   return Math.min(100, (progress.totalElapsedSeconds / total) * 100);
-}
-
-export function getWorkoutSessionStats(
-  treadmill: { distanceKm: number; calories: number },
-  workout: WorkoutProgress,
-): { distanceKm: number; calories: number } {
-  return {
-    distanceKm: Math.max(0, treadmill.distanceKm - workout.baselineDistanceKm),
-    calories: Math.max(0, Math.round(treadmill.calories - workout.baselineCalories)),
-  };
 }

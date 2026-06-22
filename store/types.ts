@@ -37,6 +37,12 @@ export interface WorkoutSlice {
   resumeWorkout: () => Promise<void>;
   stopWorkout: () => Promise<void>;
   tickWorkout: () => Promise<void>;
+  checkTreadmillInterruption: () => void;
+  goToNextSegment: () => Promise<void>;
+  goToPreviousSegment: () => Promise<void>;
+  repeatSegment: () => Promise<void>;
+  deleteSession: (sessionId: string) => Promise<void>;
+  syncWorkoutSessionMetrics: () => void;
 }
 
 export type AppState = SettingsSlice & ProgramsSlice & TreadmillSlice & WorkoutSlice;

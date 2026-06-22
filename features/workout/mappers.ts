@@ -1,4 +1,4 @@
-import type { WorkoutSession } from '@/features/workout/types';
+import type { SessionSegmentLogEntry, WorkoutSession } from '@/features/workout/types';
 
 export type SessionRow = {
   id: string;
@@ -10,7 +10,25 @@ export type SessionRow = {
   distance_km: number;
   calories: number;
   completed: number;
+  session_log_json: string | null;
 };
+
+export function parseSessionLogJson(raw: string | null | undefined): SessionSegmentLogEntry[] {
+  if (!raw) {
+    return [];
+  }
+
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    return Array.isArray(parsed) ? (parsed as SessionSegmentLogEntry[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function serializeSessionLog(segmentLog: SessionSegmentLogEntry[]): string {
+  return JSON.stringify(segmentLog);
+}
 
 export function mapSessionRow(row: SessionRow): WorkoutSession {
   return {
@@ -23,5 +41,6 @@ export function mapSessionRow(row: SessionRow): WorkoutSession {
     distanceKm: row.distance_km,
     calories: row.calories,
     completed: row.completed === 1,
+    segmentLog: parseSessionLogJson(row.session_log_json),
   };
 }

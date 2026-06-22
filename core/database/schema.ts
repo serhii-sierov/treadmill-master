@@ -40,7 +40,8 @@ export const SCHEMA_SQL = `
     total_duration_seconds INTEGER NOT NULL,
     distance_km REAL NOT NULL,
     calories INTEGER NOT NULL,
-    completed INTEGER NOT NULL DEFAULT 0
+    completed INTEGER NOT NULL DEFAULT 0,
+    session_log_json TEXT NOT NULL DEFAULT '[]'
   );
 
   CREATE INDEX IF NOT EXISTS idx_sessions_started_at ON sessions(started_at DESC);

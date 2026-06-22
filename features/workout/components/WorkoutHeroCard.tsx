@@ -3,8 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import Colors from '@/constants/Colors';
 import type { InclineUnit } from '@/constants/TreadmillSettings';
 import type { Program, Segment } from '@/features/programs/types';
+import { formatSegmentTargetsWithActual } from '@/features/workout/format-segment-targets';
 import type { WorkoutProgress } from '@/features/workout/types';
-import { formatDistance, formatDuration, formatIncline, formatSpeed } from '@/utils/format';
+import type { TreadmillState } from '@/core/treadmill/types';
+import { formatDistance, formatDuration } from '@/utils/format';
 
 interface WorkoutHeroCardProps {
   workout: WorkoutProgress | null;
@@ -13,6 +15,7 @@ interface WorkoutHeroCardProps {
   progressPercent: number;
   segmentRemaining: number;
   sessionStats: { distanceKm: number; calories: number } | null;
+  treadmill: TreadmillState;
   inclineUnit: InclineUnit;
   colors: (typeof Colors)['light'];
 }
@@ -25,14 +28,18 @@ export function WorkoutHeroCard(props: Readonly<WorkoutHeroCardProps>) {
     progressPercent,
     segmentRemaining,
     sessionStats,
+    treadmill,
     inclineUnit,
     colors,
   } = props;
 
   if (workout?.isActive) {
+    const label = workout.isInterrupted ? 'Interrupted' : workout.isPaused ? 'Paused' : 'Now playing';
+    const labelColor = workout.isInterrupted ? colors.danger : workout.isPaused ? colors.muted : colors.tint;
+
     return (
       <View style={[styles.heroCard, { backgroundColor: colors.tintMuted, borderColor: colors.tint }]}>
-        <Text style={[styles.heroLabel, { color: colors.tint }]}>Now playing</Text>
+        <Text style={[styles.heroLabel, { color: labelColor }]}>{label}</Text>
         <Text style={[styles.heroTitle, { color: colors.text }]}>{workout.programName}</Text>
         <Text style={[styles.heroSegment, { color: colors.text }]}>
           {currentSegment?.label ?? `Segment ${workout.segmentIndex + 1}`}
@@ -40,7 +47,12 @@ export function WorkoutHeroCard(props: Readonly<WorkoutHeroCardProps>) {
         <Text style={[styles.heroTimer, { color: colors.text }]}>{formatDuration(segmentRemaining)}</Text>
         <Text style={[styles.heroMeta, { color: colors.muted }]}>
           {currentSegment
-            ? `${formatSpeed(currentSegment.speedKmh)} · incline ${formatIncline(currentSegment.inclinePercent, inclineUnit)}`
+            ? formatSegmentTargetsWithActual(
+                currentSegment.speedKmh,
+                currentSegment.inclinePercent,
+                treadmill,
+                inclineUnit,
+              )
             : ''}
         </Text>
         {sessionStats ? (

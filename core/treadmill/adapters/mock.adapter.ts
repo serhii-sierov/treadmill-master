@@ -81,13 +81,53 @@ export class MockTreadmillAdapter implements TreadmillAdapter {
   async setSpeed(speedKmh: number): Promise<void> {
     this.ensureConnected();
     await delay(150);
-    this.updateState({ speedKmh });
+    this.updateState({ speedKmh, targetSpeedKmh: speedKmh });
   }
 
   async setIncline(inclinePercent: number): Promise<void> {
     this.ensureConnected();
     await delay(150);
-    this.updateState({ inclinePercent });
+    this.updateState({ inclinePercent, targetInclinePercent: inclinePercent });
+  }
+
+  async applySegmentTargets(speedKmh: number, inclinePercent: number): Promise<void> {
+    this.ensureConnected();
+    await this.setIncline(inclinePercent);
+    await this.setSpeed(speedKmh);
+  }
+
+  async startSegment(
+    speedKmh: number,
+    inclinePercent: number,
+    _options?: { forceColdStart?: boolean },
+  ): Promise<void> {
+    this.ensureConnected();
+    await this.applySegmentTargets(speedKmh, inclinePercent);
+    await this.start();
+  }
+
+  clearFtmsStopReason(): void {
+    this.updateState({ ftmsStopReason: null });
+  }
+
+  clearFtmsSessionEvent(): void {
+    // no-op
+  }
+
+  resetTrainingSessionAfterEmergency(): void {
+    this.updateState({
+      isRunning: false,
+      speedKmh: 0,
+      inclinePercent: 0,
+      targetSpeedKmh: undefined,
+      targetInclinePercent: undefined,
+      ftmsSessionPhase: 'idle',
+      ftmsStopReason: null,
+    });
+  }
+
+  isAppResumeInFlight(): boolean {
+    return false;
   }
 
   getState(): TreadmillState {

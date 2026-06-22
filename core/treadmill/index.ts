@@ -10,6 +10,8 @@ import type { MockTreadmillReason, TreadmillAdapter } from '@/core/treadmill/typ
 
 export type {
   DiscoveredTreadmill,
+  FtmsSessionPhase,
+  FtmsStopReason,
   MockTreadmillReason,
   TreadmillAdapter,
   TreadmillConnectionMode,

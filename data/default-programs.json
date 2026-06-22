@@ -1,0 +1,103 @@
+[
+  {
+    "id": "preset-warmup-walk",
+    "name": "Warm-up Walk",
+    "description": "Gentle 20-minute walk to get started",
+    "isPreset": true,
+    "segments": [
+      {
+        "id": "ww-1",
+        "label": "Easy start",
+        "durationSeconds": 300,
+        "speedKmh": 4.0,
+        "inclinePercent": 0
+      },
+      {
+        "id": "ww-2",
+        "label": "Steady pace",
+        "durationSeconds": 600,
+        "speedKmh": 5.0,
+        "inclinePercent": 1
+      },
+      {
+        "id": "ww-3",
+        "label": "Cool down",
+        "durationSeconds": 300,
+        "speedKmh": 3.5,
+        "inclinePercent": 0
+      }
+    ]
+  },
+  {
+    "id": "preset-hill-intervals",
+    "name": "Hill Intervals",
+    "description": "Alternating incline blocks for strength",
+    "isPreset": true,
+    "segments": [
+      {
+        "id": "hi-1",
+        "label": "Warm-up",
+        "durationSeconds": 300,
+        "speedKmh": 5.0,
+        "inclinePercent": 0
+      },
+      {
+        "id": "hi-2",
+        "label": "Hill 1",
+        "durationSeconds": 180,
+        "speedKmh": 5.5,
+        "inclinePercent": 6
+      },
+      {
+        "id": "hi-3",
+        "label": "Recovery",
+        "durationSeconds": 120,
+        "speedKmh": 5.0,
+        "inclinePercent": 0
+      },
+      {
+        "id": "hi-4",
+        "label": "Hill 2",
+        "durationSeconds": 180,
+        "speedKmh": 5.5,
+        "inclinePercent": 8
+      },
+      {
+        "id": "hi-5",
+        "label": "Cool down",
+        "durationSeconds": 300,
+        "speedKmh": 4.0,
+        "inclinePercent": 0
+      }
+    ]
+  },
+  {
+    "id": "preset-movie-walk",
+    "name": "Movie Walk",
+    "description": "Steady 45-minute pace — ideal while watching a film",
+    "isPreset": true,
+    "segments": [
+      {
+        "id": "mw-1",
+        "label": "Ramp up",
+        "durationSeconds": 300,
+        "speedKmh": 4.5,
+        "inclinePercent": 0
+      },
+      {
+        "id": "mw-2",
+        "label": "Main feature",
+        "durationSeconds": 2400,
+        "speedKmh": 5.5,
+        "inclinePercent": 2
+      },
+      {
+        "id": "mw-3",
+        "label": "Wind down",
+        "durationSeconds": 300,
+        "speedKmh": 4.0,
+        "inclinePercent": 0
+      }
+    ]
+  }
+]

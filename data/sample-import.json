@@ -1,0 +1,28 @@
+{
+  "programs": [
+    {
+      "name": "Imported Steady Climb",
+      "description": "Example program for JSON import testing",
+      "segments": [
+        {
+          "label": "Warm-up",
+          "durationSeconds": 300,
+          "speedKmh": 4.5,
+          "inclinePercent": 0
+        },
+        {
+          "label": "Climb block",
+          "durationSeconds": 900,
+          "speedKmh": 5.0,
+          "inclinePercent": 5
+        },
+        {
+          "label": "Cool down",
+          "durationSeconds": 300,
+          "speedKmh": 3.5,
+          "inclinePercent": 0
+        }
+      ]
+    }
+  ]
+}

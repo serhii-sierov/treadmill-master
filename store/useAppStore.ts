@@ -20,13 +20,11 @@ export const useAppStore = create<AppStore>((set, get, api) => ({
   hydrate: async () => {
     const treadmillAdapter = await initTreadmillAdapter();
 
-    if (!unsubscribeTreadmill) {
-      unsubscribeTreadmill = syncTreadmillStateToStore((partial) => {
-        useAppStore.setState(partial);
-        useAppStore.getState().checkTreadmillInterruption();
-        useAppStore.getState().syncWorkoutSessionMetrics();
-      });
-    }
+    unsubscribeTreadmill ??= syncTreadmillStateToStore((partial) => {
+      useAppStore.setState(partial);
+      useAppStore.getState().checkTreadmillInterruption();
+      useAppStore.getState().syncWorkoutSessionMetrics();
+    });
 
     const [programs, sessions, lastConnectedDeviceName, settings] = await Promise.all([
       loadPrograms(),

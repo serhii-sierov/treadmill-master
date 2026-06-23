@@ -23,7 +23,7 @@ export function formatIncline(value: number, unit: InclineUnit = 'level'): strin
 }
 
 export function inclineFieldLabel(unit: InclineUnit): string {
-  return unit === 'level' ? 'Incline (0–15)' : 'Incline (%)';
+  return unit === 'level' ? 'Incline (0-15)' : 'Incline (%)';
 }
 
 export function formatDistance(km: number): string {

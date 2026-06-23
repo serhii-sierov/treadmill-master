@@ -6,6 +6,13 @@
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
   },
+  "typescript.tsconfig": "./tsconfig.json",
+  "typescript.tsserver.watchOptions": {
+    "excludeDirectories": ["**/node_modules", "**/.git", "**/ios", "**/android"]
+  },
+  "search.exclude": {
+    "**/node_modules": true
+  },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },

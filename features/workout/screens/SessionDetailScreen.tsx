@@ -21,25 +21,33 @@ export function SessionDetailScreen(props: Readonly<SessionDetailScreenProps>) {
   return (
     <ScrollView
       style={{ backgroundColor: colors.background }}
-      contentContainerStyle={styles.content}>
+      contentContainerStyle={styles.content}
+    >
       <Text style={[styles.title, { color: colors.text }]}>{session.programName}</Text>
       <Text style={[styles.meta, { color: colors.muted }]}>
         {startedAt.toLocaleString()} · {session.completed ? 'Completed' : 'Partial'}
       </Text>
 
       <View style={styles.statsRow}>
-        <StatBlock label="Duration" value={formatDuration(session.totalDurationSeconds)} colors={colors} />
+        <StatBlock
+          label="Duration"
+          value={formatDuration(session.totalDurationSeconds)}
+          colors={colors}
+        />
         <StatBlock label="Distance" value={formatDistance(session.distanceKm)} colors={colors} />
         <StatBlock label="Calories" value={`${session.calories}`} colors={colors} />
       </View>
 
       <Text style={[styles.sectionTitle, { color: colors.text }]}>Session history</Text>
       <Text style={[styles.sectionHint, { color: colors.muted }]}>
-        What you actually ran — including skips, repeats, and console adjustments (actual values in brackets).
+        What you actually ran — including skips, repeats, and console adjustments (actual values in
+        brackets).
       </Text>
 
       {session.segmentLog.length === 0 ? (
-        <View style={[styles.emptyCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <View
+          style={[styles.emptyCard, { backgroundColor: colors.card, borderColor: colors.border }]}
+        >
           <Text style={[styles.emptyText, { color: colors.muted }]}>
             No segment details were recorded for this workout.
           </Text>
@@ -48,7 +56,11 @@ export function SessionDetailScreen(props: Readonly<SessionDetailScreenProps>) {
         session.segmentLog.map((entry, index) => (
           <View
             key={entry.id}
-            style={[styles.segmentCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            style={[
+              styles.segmentCard,
+              { backgroundColor: colors.card, borderColor: colors.border },
+            ]}
+          >
             <View style={styles.segmentHeader}>
               <Text style={[styles.segmentTitle, { color: colors.text }]}>
                 #{index + 1} · {entry.label ?? `Segment ${entry.programSegmentIndex + 1}`}
@@ -56,7 +68,9 @@ export function SessionDetailScreen(props: Readonly<SessionDetailScreenProps>) {
               <Text style={[styles.segmentDuration, { color: colors.text }]}>
                 {formatDuration(entry.elapsedSeconds)}
                 {!entry.completed ? (
-                  <Text style={{ color: colors.muted }}>{` / ${formatDuration(entry.plannedDurationSeconds)}`}</Text>
+                  <Text
+                    style={{ color: colors.muted }}
+                  >{` / ${formatDuration(entry.plannedDurationSeconds)}`}</Text>
                 ) : null}
               </Text>
             </View>
@@ -70,7 +84,9 @@ export function SessionDetailScreen(props: Readonly<SessionDetailScreenProps>) {
               )}
             </Text>
             {!entry.completed ? (
-              <Text style={[styles.skippedHint, { color: colors.muted }]}>Skipped or repeated early</Text>
+              <Text style={[styles.skippedHint, { color: colors.muted }]}>
+                Skipped or repeated early
+              </Text>
             ) : null}
           </View>
         ))
@@ -78,18 +94,21 @@ export function SessionDetailScreen(props: Readonly<SessionDetailScreenProps>) {
 
       <Pressable
         onPress={onDelete}
-        style={[styles.deleteButton, { borderColor: colors.danger, backgroundColor: colors.card }]}>
+        style={[styles.deleteButton, { borderColor: colors.danger, backgroundColor: colors.card }]}
+      >
         <Text style={[styles.deleteLabel, { color: colors.danger }]}>Delete workout</Text>
       </Pressable>
     </ScrollView>
   );
 }
 
-function StatBlock(props: Readonly<{
-  label: string;
-  value: string;
-  colors: (typeof Colors)['light'];
-}>) {
+function StatBlock(
+  props: Readonly<{
+    label: string;
+    value: string;
+    colors: (typeof Colors)['light'];
+  }>,
+) {
   const { label, value, colors } = props;
 
   return (

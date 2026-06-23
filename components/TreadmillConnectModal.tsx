@@ -83,13 +83,15 @@ export function TreadmillConnectModal(props: Readonly<TreadmillConnectModalProps
           <Text style={[styles.title, { color: colors.text }]}>Connect treadmill</Text>
           <Text style={[styles.subtitle, { color: colors.muted }]}>
             {isMock
-              ? mockReasonMessage ??
-                'Mock mode. Use a development build on a real iPhone for BLE.'
+              ? (mockReasonMessage ??
+                'Mock mode. Use a development build on a real iPhone for BLE.')
               : 'Scanning for FTMS-compatible treadmills nearby.'}
           </Text>
 
           {lastDeviceName ? (
-            <Text style={[styles.lastDevice, { color: colors.muted }]}>Last connected: {lastDeviceName}</Text>
+            <Text style={[styles.lastDevice, { color: colors.muted }]}>
+              Last connected: {lastDeviceName}
+            </Text>
           ) : null}
 
           {scanning ? (
@@ -104,7 +106,8 @@ export function TreadmillConnectModal(props: Readonly<TreadmillConnectModalProps
                   style={[
                     styles.deviceRow,
                     { borderColor: colors.border, backgroundColor: colors.background },
-                  ]}>
+                  ]}
+                >
                   <View style={styles.deviceInfo}>
                     <Text style={[styles.deviceName, { color: colors.text }]}>{device.name}</Text>
                     <Text style={[styles.deviceMeta, { color: colors.muted }]}>
@@ -124,10 +127,14 @@ export function TreadmillConnectModal(props: Readonly<TreadmillConnectModalProps
           <View style={styles.actions}>
             <Pressable
               onPress={() => fireAndForget(startScan())}
-              style={[styles.secondaryButton, { borderColor: colors.border }]}>
+              style={[styles.secondaryButton, { borderColor: colors.border }]}
+            >
               <Text style={[styles.secondaryLabel, { color: colors.text }]}>Scan again</Text>
             </Pressable>
-            <Pressable onPress={onClose} style={[styles.secondaryButton, { borderColor: colors.border }]}>
+            <Pressable
+              onPress={onClose}
+              style={[styles.secondaryButton, { borderColor: colors.border }]}
+            >
               <Text style={[styles.secondaryLabel, { color: colors.text }]}>Close</Text>
             </Pressable>
           </View>

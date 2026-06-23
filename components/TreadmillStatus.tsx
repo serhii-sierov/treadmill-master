@@ -26,10 +26,7 @@ export function TreadmillStatus(props: Readonly<TreadmillStatusProps>) {
       <View style={styles.header}>
         <Text style={[styles.title, { color: colors.text }]}>Treadmill</Text>
         <View
-          style={[
-            styles.dot,
-            { backgroundColor: state.connected ? colors.success : colors.muted },
-          ]}
+          style={[styles.dot, { backgroundColor: state.connected ? colors.success : colors.muted }]}
         />
       </View>
 
@@ -42,7 +39,11 @@ export function TreadmillStatus(props: Readonly<TreadmillStatusProps>) {
           value={formatIncline(state.inclinePercent, inclineUnit)}
           colors={colors}
         />
-        <TreadmillMetric label="Distance" value={formatDistance(state.distanceKm)} colors={colors} />
+        <TreadmillMetric
+          label="Distance"
+          value={formatDistance(state.distanceKm)}
+          colors={colors}
+        />
         <TreadmillMetric
           label="Status"
           value={state.isRunning ? 'Running' : 'Stopped'}

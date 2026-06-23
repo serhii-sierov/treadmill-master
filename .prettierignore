@@ -1,0 +1,16 @@
+node_modules
+.expo
+dist
+build
+ios
+android
+coverage
+package-lock.json
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.ttf
+*.woff
+*.woff2

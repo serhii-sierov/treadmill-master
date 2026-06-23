@@ -1,4 +1,8 @@
-export type { WorkoutProgress, WorkoutSession, SessionSegmentLogEntry } from '@/features/workout/types';
+export type {
+  WorkoutProgress,
+  WorkoutSession,
+  SessionSegmentLogEntry,
+} from '@/features/workout/types';
 
 export {
   applySegmentToTreadmill,

@@ -33,7 +33,9 @@ export function WorkoutInterruptedBanner(props: Readonly<WorkoutInterruptedBanne
   const copy = getInterruptionCopy(reason);
 
   return (
-    <View style={[styles.banner, { backgroundColor: colors.danger + '18', borderColor: colors.danger }]}>
+    <View
+      style={[styles.banner, { backgroundColor: colors.danger + '18', borderColor: colors.danger }]}
+    >
       <Text style={[styles.title, { color: colors.danger }]}>{copy.title}</Text>
       <Text style={[styles.body, { color: colors.text }]}>{copy.body}</Text>
     </View>

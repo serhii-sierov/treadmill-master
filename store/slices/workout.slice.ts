@@ -1,7 +1,7 @@
-import type { StateCreator } from "zustand";
+import type { StateCreator } from 'zustand';
 
-import { healthService } from "@/core/health";
-import { getTreadmillAdapter } from "@/core/treadmill";
+import { healthService } from '@/core/health';
+import { getTreadmillAdapter } from '@/core/treadmill';
 import { logFtms } from '@/core/treadmill/adapters/ftms/ftms-debug';
 import {
   applySegmentToTreadmill,
@@ -13,8 +13,12 @@ import {
   getWorkoutSessionStats,
   insertSession,
   startSegmentOnTreadmill,
-} from "@/features/workout";
-import { detectTreadmillInterruption, isExternalWorkoutResume, resetBeltStopTracking } from '@/features/workout/interruption';
+} from '@/features/workout';
+import {
+  detectTreadmillInterruption,
+  isExternalWorkoutResume,
+  resetBeltStopTracking,
+} from '@/features/workout/interruption';
 import {
   accumulateSessionMetrics,
   createInitialSessionMetrics,
@@ -26,32 +30,27 @@ import {
   isProgramCompletedNaturally,
   transitionWorkoutSegment,
 } from '@/features/workout/session-log';
-import type { WorkoutProgress, WorkoutSession } from "@/features/workout/types";
-import type { AppState, WorkoutSlice } from "@/store/types";
-import { createId } from "@/utils/id";
+import type { WorkoutProgress, WorkoutSession } from '@/features/workout/types';
+import type { AppState, WorkoutSlice } from '@/store/types';
+import { createId } from '@/utils/id';
 
 let tickTimer: ReturnType<typeof setInterval> | null = null;
 
-export const createWorkoutSlice: StateCreator<
-  AppState,
-  [],
-  [],
-  WorkoutSlice
-> = (set, get) => ({
+export const createWorkoutSlice: StateCreator<AppState, [], [], WorkoutSlice> = (set, get) => ({
   sessions: [],
   workout: null,
 
   startWorkout: async (programId) => {
     const program = get().programs.find((item) => item.id === programId);
     if (!program || program.segments.length === 0) {
-      throw new Error("Program not found or has no segments.");
+      throw new Error('Program not found or has no segments.');
     }
 
-    const sessionId = createId("session");
+    const sessionId = createId('session');
     const firstSegment = program.segments[0];
 
     if (!get().treadmill.connected) {
-      throw new Error("Connect your treadmill before starting a workout.");
+      throw new Error('Connect your treadmill before starting a workout.');
     }
 
     const treadmillSnapshot = getTreadmillAdapter().getState();
@@ -113,12 +112,10 @@ export const createWorkoutSlice: StateCreator<
       );
     }
 
-    const program = get().programs.find(
-      (item) => item.id === workout.programId,
-    );
+    const program = get().programs.find((item) => item.id === workout.programId);
     const segment = program?.segments[workout.segmentIndex];
     if (!segment) {
-      throw new Error("Current segment not found.");
+      throw new Error('Current segment not found.');
     }
 
     if (wasSafetyKey) {
@@ -156,24 +153,22 @@ export const createWorkoutSlice: StateCreator<
     resetBeltStopTracking();
     await getTreadmillAdapter().stop();
 
-    const program = get().programs.find(
-      (item) => item.id === workout.programId,
-    );
+    const program = get().programs.find((item) => item.id === workout.programId);
     const completed = program ? isProgramCompletedNaturally(workout, program) : false;
     const workoutWithLog = program
       ? finalizeCurrentSegmentLog(workout, program, treadmill)
       : workout;
 
-    const { distanceKm: sessionDistanceKm, calories: sessionCalories } =
-      getWorkoutSessionStats(treadmill, workoutWithLog);
+    const { distanceKm: sessionDistanceKm, calories: sessionCalories } = getWorkoutSessionStats(
+      treadmill,
+      workoutWithLog,
+    );
 
     const session: WorkoutSession = {
       id: workout.sessionId,
       programId: workout.programId,
       programName: workout.programName,
-      startedAt: new Date(
-        Date.now() - workout.totalElapsedSeconds * 1000,
-      ).toISOString(),
+      startedAt: new Date(Date.now() - workout.totalElapsedSeconds * 1000).toISOString(),
       endedAt: new Date().toISOString(),
       totalDurationSeconds: workout.totalElapsedSeconds,
       distanceKm: sessionDistanceKm,
@@ -267,9 +262,7 @@ export const createWorkoutSlice: StateCreator<
       return;
     }
 
-    const program = get().programs.find(
-      (item) => item.id === workout.programId,
-    );
+    const program = get().programs.find((item) => item.id === workout.programId);
     if (!program) {
       await get().stopWorkout();
       return;
@@ -481,7 +474,9 @@ function stopWorkoutTimer(): void {
   }
 }
 
-function pickSessionMetrics(workout: WorkoutProgress): Pick<
+function pickSessionMetrics(
+  workout: WorkoutProgress,
+): Pick<
   WorkoutProgress,
   | 'accumulatedDistanceKm'
   | 'accumulatedCalories'
@@ -496,4 +491,4 @@ function pickSessionMetrics(workout: WorkoutProgress): Pick<
   };
 }
 
-export { loadSessions } from "@/features/workout";
+export { loadSessions } from '@/features/workout';

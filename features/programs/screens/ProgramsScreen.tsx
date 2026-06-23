@@ -10,7 +10,12 @@ import { TabButton } from '@/components/TabButton';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useAppStore } from '@/store/useAppStore';
-import { filterProgramsByPreset, parseProgramsJson, resolveProgramsTab, type ProgramTab } from '@/features/programs';
+import {
+  filterProgramsByPreset,
+  parseProgramsJson,
+  resolveProgramsTab,
+  type ProgramTab,
+} from '@/features/programs';
 import { fireAndForget, fireAndForgetAlert } from '@/utils/fire-and-forget';
 
 export function ProgramsScreen() {
@@ -121,10 +126,14 @@ export function ProgramsScreen() {
     }
 
     if (!treadmill.connected) {
-      Alert.alert('Connect treadmill', 'Connect your treadmill on the Workout tab before starting.', [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Go to Workout', onPress: () => router.push('/workout') },
-      ]);
+      Alert.alert(
+        'Connect treadmill',
+        'Connect your treadmill on the Workout tab before starting.',
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Go to Workout', onPress: () => router.push('/workout') },
+        ],
+      );
       return;
     }
 
@@ -132,7 +141,10 @@ export function ProgramsScreen() {
       await startWorkout(programId);
       router.push('/workout');
     } catch (error) {
-      Alert.alert('Could not start workout', error instanceof Error ? error.message : 'Unknown error');
+      Alert.alert(
+        'Could not start workout',
+        error instanceof Error ? error.message : 'Unknown error',
+      );
     }
   };
 
@@ -195,14 +207,20 @@ export function ProgramsScreen() {
         <View
           style={[
             styles.footer,
-            { borderTopColor: colors.border, backgroundColor: colors.card, paddingBottom: 16 + insets.bottom },
-          ]}>
+            {
+              borderTopColor: colors.border,
+              backgroundColor: colors.card,
+              paddingBottom: 16 + insets.bottom,
+            },
+          ]}
+        >
           <Pressable
             onPress={() => {
               if (selectedProgram) {
                 handleDelete(selectedProgram.id, selectedProgram.name);
               }
-            }}>
+            }}
+          >
             <Text style={[styles.footerAction, { color: colors.danger }]}>Delete selected</Text>
           </Pressable>
         </View>

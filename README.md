@@ -40,12 +40,12 @@ On the **Workout** tab: **Scan & connect** → pick your treadmill → start wor
 
 ### Troubleshooting mock mode on a real phone
 
-| Symptom | Fix |
-|---------|-----|
-| Scan shows "Mock Treadmill (simulator)" | You opened **Expo Go** instead of the dev build app |
+| Symptom                                             | Fix                                                                   |
+| --------------------------------------------------- | --------------------------------------------------------------------- |
+| Scan shows "Mock Treadmill (simulator)"             | You opened **Expo Go** instead of the dev build app                   |
 | Workout tab says "Expo Go has no BLE native module" | Same — install via `npm run ios:device` and open **Treadmill Master** |
-| Says "BLE native module missing" | Rebuild: `npm run ios:device` (native module not linked) |
-| Still mock after rebuild | Run `npm run start:dev`, not `npm start` |
+| Says "BLE native module missing"                    | Rebuild: `npm run ios:device` (native module not linked)              |
+| Still mock after rebuild                            | Run `npm run start:dev`, not `npm start`                              |
 
 Mock mode is used only when: web, Expo Go, missing native BLE module, or `EXPO_PUBLIC_USE_MOCK_TREADMILL=true`.
 
@@ -80,13 +80,13 @@ Use **Programs → Import JSON**. See `data/sample-import.json` for the expected
 
 ## Roadmap (your goals)
 
-| Feature | Status | Notes |
-|---------|--------|-------|
-| Unlimited custom programs | ✅ MVP | SQLite persistence (`expo-sqlite`) |
-| FTMS / FitShow BLE control | ✅ Dev build | `services/ble/ftms-controller.ts` |
-| Movie-friendly glance UI | 🔜 | iOS Live Activity / notification area |
-| Apple Watch companion | 🔜 | Separate watchOS target |
-| Apple Health export | 🔜 | `react-native-health` stub in `services/health.ts` |
+| Feature                    | Status       | Notes                                              |
+| -------------------------- | ------------ | -------------------------------------------------- |
+| Unlimited custom programs  | ✅ MVP       | SQLite persistence (`expo-sqlite`)                 |
+| FTMS / FitShow BLE control | ✅ Dev build | `services/ble/ftms-controller.ts`                  |
+| Movie-friendly glance UI   | 🔜           | iOS Live Activity / notification area              |
+| Apple Watch companion      | 🔜           | Separate watchOS target                            |
+| Apple Health export        | 🔜           | `react-native-health` stub in `services/health.ts` |
 
 ### Treadmill connectivity
 
@@ -104,11 +104,11 @@ Implementation lives in `services/ble/`:
 
 All app data lives in a local **SQLite** database (`treadmill.db`) via `expo-sqlite`:
 
-| Table | Contents |
-|-------|----------|
-| `programs` | Program metadata |
+| Table      | Contents                             |
+| ---------- | ------------------------------------ |
+| `programs` | Program metadata                     |
 | `segments` | Duration, speed, incline per program |
-| `sessions` | Completed workout history |
+| `sessions` | Completed workout history            |
 
 SQLite is the standard on mobile (iOS and Android ship it; most apps use it or something built on it). Preset programs are seeded into the database on first launch.
 

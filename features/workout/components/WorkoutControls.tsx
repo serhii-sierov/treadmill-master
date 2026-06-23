@@ -30,7 +30,11 @@ export function WorkoutControls(props: Readonly<WorkoutControlsProps>) {
           )}
           <Pressable
             onPress={onStop}
-            style={[styles.dangerButton, { borderColor: colors.danger, backgroundColor: colors.card }]}>
+            style={[
+              styles.dangerButton,
+              { borderColor: colors.danger, backgroundColor: colors.card },
+            ]}
+          >
             <Text style={[styles.dangerLabel, { color: colors.danger }]}>End workout</Text>
           </Pressable>
         </>

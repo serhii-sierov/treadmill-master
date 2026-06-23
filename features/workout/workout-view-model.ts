@@ -25,12 +25,12 @@ export function buildWorkoutViewModel(
 ): WorkoutViewModel {
   const selectedProgram = programs.find((program) => program.id === selectedProgramId) ?? null;
   const activeProgram = workout
-    ? programs.find((program) => program.id === workout.programId) ?? null
+    ? (programs.find((program) => program.id === workout.programId) ?? null)
     : selectedProgram;
   const currentSegment =
     activeProgram && workout
       ? getCurrentSegment(activeProgram, workout)
-      : activeProgram?.segments[0] ?? null;
+      : (activeProgram?.segments[0] ?? null);
 
   return {
     selectedProgram,
@@ -41,7 +41,7 @@ export function buildWorkoutViewModel(
     segmentRemaining:
       currentSegment && workout
         ? getRemainingSegmentSeconds(currentSegment, workout)
-        : currentSegment?.durationSeconds ?? 0,
+        : (currentSegment?.durationSeconds ?? 0),
     sessionStats: workout?.isActive ? getWorkoutSessionStats(treadmill, workout) : null,
   };
 }

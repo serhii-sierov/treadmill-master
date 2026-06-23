@@ -20,7 +20,10 @@ import { fireAndForgetAlert, getErrorMessage } from '@/utils/fire-and-forget';
 
 import type { WorkoutInterruptionReason } from '@/features/workout/types';
 
-function getInterruptionAlert(reason?: WorkoutInterruptionReason): { title: string; message: string } {
+function getInterruptionAlert(reason?: WorkoutInterruptionReason): {
+  title: string;
+  message: string;
+} {
   switch (reason) {
     case 'safety_key':
       return {
@@ -31,7 +34,8 @@ function getInterruptionAlert(reason?: WorkoutInterruptionReason): { title: stri
     case 'user_stop':
       return {
         title: 'Treadmill stopped',
-        message: 'The treadmill was stopped from the console. Continue from this segment or end the workout.',
+        message:
+          'The treadmill was stopped from the console. Continue from this segment or end the workout.',
       };
     default:
       return {
@@ -88,7 +92,11 @@ export function WorkoutScreen() {
     interruptionAlertShown.current = true;
     const alert = getInterruptionAlert(workout.interruptionReason);
     Alert.alert(alert.title, alert.message, [
-      { text: 'End workout', style: 'destructive', onPress: () => fireAndForgetAlert(stopWorkout(), 'End workout failed') },
+      {
+        text: 'End workout',
+        style: 'destructive',
+        onPress: () => fireAndForgetAlert(stopWorkout(), 'End workout failed'),
+      },
       { text: 'Continue', onPress: () => fireAndForgetAlert(resumeWorkout(), 'Resume failed') },
     ]);
   }, [workout?.isInterrupted, workout?.interruptionReason, resumeWorkout, stopWorkout]);
@@ -144,7 +152,8 @@ export function WorkoutScreen() {
     <>
       <ScrollView
         style={{ backgroundColor: colors.background }}
-        contentContainerStyle={styles.content}>
+        contentContainerStyle={styles.content}
+      >
         <TreadmillStatus state={treadmill} inclineUnit={inclineUnit} />
 
         <WorkoutConnectionRow
@@ -180,7 +189,9 @@ export function WorkoutScreen() {
             segmentCount={viewModel.activeProgram.segments.length}
             disabled={workout.isInterrupted}
             colors={colors}
-            onPrevious={() => fireAndForgetAlert(goToPreviousSegment(), 'Segment navigation failed')}
+            onPrevious={() =>
+              fireAndForgetAlert(goToPreviousSegment(), 'Segment navigation failed')
+            }
             onRepeat={() => fireAndForgetAlert(repeatSegment(), 'Segment navigation failed')}
             onNext={() => fireAndForgetAlert(goToNextSegment(), 'Segment navigation failed')}
           />
@@ -205,7 +216,8 @@ export function WorkoutScreen() {
         <FtmsDebugPanel visible={treadmill.connected && treadmill.mode === 'ble'} colors={colors} />
 
         <Text style={[styles.note, { color: colors.muted }]}>
-          Tip: swipe down for notifications during a movie. A Live Activity / Apple Watch companion is planned next.
+          Tip: swipe down for notifications during a movie. A Live Activity / Apple Watch companion
+          is planned next.
         </Text>
       </ScrollView>
 

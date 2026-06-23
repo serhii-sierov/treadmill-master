@@ -31,6 +31,7 @@
   "devDependencies": {
     "@types/react": "~19.2.17",
     "@types/uuid": "^10.0.0",
+    "prettier": "^3.6.2",
     "typescript": "~6.0.3"
   },
   "scripts": {
@@ -42,7 +43,9 @@
     "prebuild": "expo prebuild",
     "sync:native-assets": "expo prebuild --no-install",
     "generate:assets": "bash scripts/generate-assets.sh",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "private": true
 }

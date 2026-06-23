@@ -1,13 +1,9 @@
-import type {
-  DiscoveredTreadmill,
-  TreadmillAdapter,
-  TreadmillState,
-} from "@/core/treadmill/types";
+import type { DiscoveredTreadmill, TreadmillAdapter, TreadmillState } from '@/core/treadmill/types';
 
 export class MockTreadmillAdapter implements TreadmillAdapter {
   private state: TreadmillState = {
     connected: false,
-    mode: "mock",
+    mode: 'mock',
     speedKmh: 0,
     inclinePercent: 0,
     isRunning: false,
@@ -18,8 +14,8 @@ export class MockTreadmillAdapter implements TreadmillAdapter {
   private readonly listeners = new Set<(state: TreadmillState) => void>();
   private tickInterval: ReturnType<typeof setInterval> | null = null;
 
-  getMode(): "mock" {
-    return "mock";
+  getMode(): 'mock' {
+    return 'mock';
   }
 
   isBleAvailable(): boolean {
@@ -29,8 +25,8 @@ export class MockTreadmillAdapter implements TreadmillAdapter {
   async scan(): Promise<DiscoveredTreadmill[]> {
     return [
       {
-        id: "mock-treadmill",
-        name: "Mock Treadmill (simulator)",
+        id: 'mock-treadmill',
+        name: 'Mock Treadmill (simulator)',
         rssi: null,
       },
     ];
@@ -40,15 +36,15 @@ export class MockTreadmillAdapter implements TreadmillAdapter {
     await delay(400);
     this.updateState({
       connected: true,
-      deviceId: deviceId ?? "mock-treadmill",
-      deviceName: "Mock Treadmill",
-      mode: "mock",
+      deviceId: deviceId ?? 'mock-treadmill',
+      deviceName: 'Mock Treadmill',
+      mode: 'mock',
     });
     this.startTicking();
   }
 
   async reconnectLast(): Promise<void> {
-    await this.connect("mock-treadmill");
+    await this.connect('mock-treadmill');
   }
 
   async disconnect(): Promise<void> {
@@ -142,7 +138,7 @@ export class MockTreadmillAdapter implements TreadmillAdapter {
 
   private ensureConnected(): void {
     if (!this.state.connected) {
-      throw new Error("Treadmill is not connected.");
+      throw new Error('Treadmill is not connected.');
     }
   }
 

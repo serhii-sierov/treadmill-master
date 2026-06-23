@@ -1,23 +1,15 @@
-import type { StateCreator } from "zustand";
+import type { StateCreator } from 'zustand';
 
 import {
   deleteProgram as deleteProgramFromDb,
   touchProgramLastUsed,
   upsertProgram,
   upsertPrograms,
-} from "@/features/programs";
-import {
-  createEmptyProgram,
-  sortProgramsByRecency,
-} from "@/features/programs/program.logic";
-import type { AppState, ProgramsSlice } from "@/store/types";
+} from '@/features/programs';
+import { createEmptyProgram, sortProgramsByRecency } from '@/features/programs/program.logic';
+import type { AppState, ProgramsSlice } from '@/store/types';
 
-export const createProgramsSlice: StateCreator<
-  AppState,
-  [],
-  [],
-  ProgramsSlice
-> = (set, get) => ({
+export const createProgramsSlice: StateCreator<AppState, [], [], ProgramsSlice> = (set, get) => ({
   programs: [],
   selectedProgramId: null,
 
@@ -41,13 +33,10 @@ export const createProgramsSlice: StateCreator<
   },
 
   deleteProgram: async (programId) => {
-    const programs = sortProgramsByRecency(
-      get().programs.filter((item) => item.id !== programId),
-    );
+    const programs = sortProgramsByRecency(get().programs.filter((item) => item.id !== programId));
     set({
       programs,
-      selectedProgramId:
-        get().selectedProgramId === programId ? null : get().selectedProgramId,
+      selectedProgramId: get().selectedProgramId === programId ? null : get().selectedProgramId,
     });
     await deleteProgramFromDb(programId);
   },
@@ -63,12 +52,10 @@ export const createProgramsSlice: StateCreator<
     await touchProgramLastUsed(programId);
     set({
       programs: sortProgramsByRecency(
-        get().programs.map((item) =>
-          item.id === programId ? { ...item, lastUsedAt: now } : item,
-        ),
+        get().programs.map((item) => (item.id === programId ? { ...item, lastUsedAt: now } : item)),
       ),
     });
   },
 });
 
-export { loadPrograms } from "@/features/programs";
+export { loadPrograms } from '@/features/programs';

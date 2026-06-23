@@ -87,10 +87,7 @@ export function finalizeCurrentSegmentLog(
   );
 }
 
-export function isProgramCompletedNaturally(
-  workout: WorkoutProgress,
-  program: Program,
-): boolean {
+export function isProgramCompletedNaturally(workout: WorkoutProgress, program: Program): boolean {
   const lastIndex = program.segments.length - 1;
   const lastSegment = program.segments[lastIndex];
   if (!lastSegment) {

@@ -12,14 +12,19 @@ interface WorkoutConnectionRowProps {
 }
 
 export function WorkoutConnectionRow(props: Readonly<WorkoutConnectionRowProps>) {
-  const { connected, lastConnectedDeviceName, colors, onDisconnect, onScanConnect, onReconnect } = props;
+  const { connected, lastConnectedDeviceName, colors, onDisconnect, onScanConnect, onReconnect } =
+    props;
 
   if (connected) {
     return (
       <View style={styles.connectionRow}>
         <Pressable
           onPress={onDisconnect}
-          style={[styles.secondaryButton, { borderColor: colors.border, backgroundColor: colors.card }]}>
+          style={[
+            styles.secondaryButton,
+            { borderColor: colors.border, backgroundColor: colors.card },
+          ]}
+        >
           <Text style={[styles.secondaryLabel, { color: colors.text }]}>Disconnect</Text>
         </Pressable>
       </View>
@@ -30,13 +35,21 @@ export function WorkoutConnectionRow(props: Readonly<WorkoutConnectionRowProps>)
     <View style={styles.connectionRow}>
       <Pressable
         onPress={onScanConnect}
-        style={[styles.secondaryButton, { borderColor: colors.tint, backgroundColor: colors.tintMuted }]}>
+        style={[
+          styles.secondaryButton,
+          { borderColor: colors.tint, backgroundColor: colors.tintMuted },
+        ]}
+      >
         <Text style={[styles.secondaryLabel, { color: colors.tint }]}>Scan & connect</Text>
       </Pressable>
       {lastConnectedDeviceName ? (
         <Pressable
           onPress={onReconnect}
-          style={[styles.secondaryButton, { borderColor: colors.border, backgroundColor: colors.card }]}>
+          style={[
+            styles.secondaryButton,
+            { borderColor: colors.border, backgroundColor: colors.card },
+          ]}
+        >
           <Text style={[styles.secondaryLabel, { color: colors.text }]}>Reconnect</Text>
         </Pressable>
       ) : null}

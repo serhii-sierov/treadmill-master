@@ -21,8 +21,11 @@ export function InclineUnitOption(props: Readonly<InclineUnitOptionProps>) {
           borderColor: selected ? colors.tint : colors.border,
           backgroundColor: selected ? colors.tintMuted : colors.card,
         },
-      ]}>
-      <Text style={[styles.toggleLabel, { color: selected ? colors.tint : colors.text }]}>{label}</Text>
+      ]}
+    >
+      <Text style={[styles.toggleLabel, { color: selected ? colors.tint : colors.text }]}>
+        {label}
+      </Text>
     </Pressable>
   );
 }

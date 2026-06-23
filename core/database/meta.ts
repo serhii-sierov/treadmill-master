@@ -2,7 +2,10 @@ import { getDatabase } from '@/core/database/client';
 
 export async function getMeta(key: string): Promise<string | null> {
   const db = await getDatabase();
-  const row = await db.getFirstAsync<{ value: string }>('SELECT value FROM meta WHERE key = ?', key);
+  const row = await db.getFirstAsync<{ value: string }>(
+    'SELECT value FROM meta WHERE key = ?',
+    key,
+  );
   return row?.value ?? null;
 }
 

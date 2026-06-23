@@ -66,7 +66,14 @@ export default function SessionDetailRoute() {
 
   if (loading) {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background }}>
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: colors.background,
+        }}
+      >
         <Text style={{ color: colors.muted }}>Loading workout...</Text>
       </View>
     );
@@ -74,7 +81,14 @@ export default function SessionDetailRoute() {
 
   if (!session) {
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.background }}>
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: colors.background,
+        }}
+      >
         <Text style={{ color: colors.muted }}>Workout not found.</Text>
       </View>
     );

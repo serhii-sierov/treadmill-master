@@ -12,4 +12,9 @@ export {
   sortProgramsByRecency,
 } from '@/features/programs/program.logic';
 
-export type { Program, ProgramsImportPayload, ProgramTab, Segment } from '@/features/programs/types';
+export type {
+  Program,
+  ProgramsImportPayload,
+  ProgramTab,
+  Segment,
+} from '@/features/programs/types';

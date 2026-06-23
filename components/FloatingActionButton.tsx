@@ -12,7 +12,8 @@ interface FloatingActionButtonProps {
 }
 
 export function FloatingActionButton(props: Readonly<FloatingActionButtonProps>) {
-  const { accessibilityLabel, onPress, size, backgroundColor, borderColor, icon, iconColor } = props;
+  const { accessibilityLabel, onPress, size, backgroundColor, borderColor, icon, iconColor } =
+    props;
   const dimension = size === 'large' ? 56 : 48;
   const iconSize = size === 'large' ? 24 : 20;
 
@@ -31,7 +32,8 @@ export function FloatingActionButton(props: Readonly<FloatingActionButtonProps>)
           borderColor,
           opacity: pressed ? 0.88 : 1,
         },
-      ]}>
+      ]}
+    >
       <SymbolView name={icon} size={iconSize} tintColor={iconColor} />
     </Pressable>
   );

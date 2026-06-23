@@ -67,7 +67,11 @@ export interface TreadmillAdapter {
    * Start a segment — always uses FTMS cold start: Start → wait → set targets → Start.
    * Segment transitions while the belt is running use applySegmentTargets instead.
    */
-  startSegment(speedKmh: number, inclinePercent: number, options?: StartSegmentOptions): Promise<void>;
+  startSegment(
+    speedKmh: number,
+    inclinePercent: number,
+    options?: StartSegmentOptions,
+  ): Promise<void>;
   /** Clear consumed FTMS stop reason after the app handles it. */
   clearFtmsStopReason(): void;
   clearFtmsSessionEvent(): void;
@@ -79,9 +83,4 @@ export interface TreadmillAdapter {
   subscribe(listener: (state: TreadmillState) => void): () => void;
 }
 
-export type MockTreadmillReason =
-  | 'web'
-  | 'expo-go'
-  | 'no-native-ble'
-  | 'env-flag'
-  | null;
+export type MockTreadmillReason = 'web' | 'expo-go' | 'no-native-ble' | 'env-flag' | null;

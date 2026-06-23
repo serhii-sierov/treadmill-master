@@ -11,9 +11,7 @@ export async function seedProgramsIfNeeded(): Promise<void> {
   }
 
   const db = await getDatabase();
-  const count = await db.getFirstAsync<{ total: number }>(
-    'SELECT COUNT(*) AS total FROM programs',
-  );
+  const count = await db.getFirstAsync<{ total: number }>('SELECT COUNT(*) AS total FROM programs');
 
   if ((count?.total ?? 0) === 0) {
     for (const program of getDefaultPrograms()) {

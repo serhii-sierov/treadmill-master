@@ -13,15 +13,7 @@ interface WorkoutSegmentNavProps {
 }
 
 export function WorkoutSegmentNav(props: Readonly<WorkoutSegmentNavProps>) {
-  const {
-    segmentIndex,
-    segmentCount,
-    disabled,
-    colors,
-    onPrevious,
-    onRepeat,
-    onNext,
-  } = props;
+  const { segmentIndex, segmentCount, disabled, colors, onPrevious, onRepeat, onNext } = props;
 
   const atFirst = segmentIndex <= 0;
   const atLast = segmentIndex >= segmentCount - 1;
@@ -34,30 +26,21 @@ export function WorkoutSegmentNav(props: Readonly<WorkoutSegmentNavProps>) {
         colors={colors}
         onPress={onPrevious}
       />
-      <NavButton
-        label="Repeat"
-        disabled={disabled}
-        colors={colors}
-        onPress={onRepeat}
-        compact
-      />
-      <NavButton
-        label="Next"
-        disabled={disabled || atLast}
-        colors={colors}
-        onPress={onNext}
-      />
+      <NavButton label="Repeat" disabled={disabled} colors={colors} onPress={onRepeat} compact />
+      <NavButton label="Next" disabled={disabled || atLast} colors={colors} onPress={onNext} />
     </View>
   );
 }
 
-function NavButton(props: Readonly<{
-  label: string;
-  disabled?: boolean;
-  compact?: boolean;
-  colors: (typeof Colors)['light'];
-  onPress: () => void;
-}>) {
+function NavButton(
+  props: Readonly<{
+    label: string;
+    disabled?: boolean;
+    compact?: boolean;
+    colors: (typeof Colors)['light'];
+    onPress: () => void;
+  }>,
+) {
   const { label, disabled, compact, colors, onPress } = props;
 
   return (
@@ -72,7 +55,8 @@ function NavButton(props: Readonly<{
           borderColor: colors.border,
           opacity: disabled ? 0.45 : 1,
         },
-      ]}>
+      ]}
+    >
       <Text style={[styles.label, { color: colors.text }]}>{label}</Text>
     </Pressable>
   );

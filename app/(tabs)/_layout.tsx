@@ -57,7 +57,8 @@ export default function TabLayout() {
         },
         headerTintColor: Colors[colorScheme].text,
         headerShown: useClientOnlyValue(false, true),
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{

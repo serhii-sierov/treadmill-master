@@ -57,22 +57,22 @@ export function FtmsDebugPanel(props: Readonly<FtmsDebugPanelProps>) {
             style={[
               styles.logContainer,
               { borderColor: colors.border, backgroundColor: colors.background },
-            ]}>
+            ]}
+          >
             <ScrollView
               ref={scrollRef}
               style={styles.logScroll}
               contentContainerStyle={styles.logContent}
               nestedScrollEnabled
-              showsVerticalScrollIndicator>
+              showsVerticalScrollIndicator
+            >
               {entries.length === 0 ? (
                 <Text style={[styles.empty, { color: colors.muted }]}>
                   Waiting for status, commands, or app events…
                 </Text>
               ) : (
                 entries.map((entry) => (
-                  <View
-                    key={entry.id}
-                    style={[styles.row, { borderBottomColor: colors.border }]}>
+                  <View key={entry.id} style={[styles.row, { borderBottomColor: colors.border }]}>
                     <Text style={[styles.time, { color: colors.muted }]}>
                       {entry.at} · {entry.source}
                     </Text>

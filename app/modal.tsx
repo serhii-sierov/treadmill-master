@@ -18,7 +18,8 @@ export default function AboutModal() {
     <ScrollView
       style={{ backgroundColor: colors.background }}
       contentContainerStyle={styles.content}
-      onLayout={() => fireAndForget(hydrate())}>
+      onLayout={() => fireAndForget(hydrate())}
+    >
       <Text style={[styles.title, { color: colors.text }]}>Treadmill Master</Text>
       <Text style={[styles.body, { color: colors.muted }]}>
         Unlimited custom workout programs for FitShow-compatible treadmills. Real FTMS BLE control
@@ -54,14 +55,17 @@ export default function AboutModal() {
 
       <Text style={[styles.section, { color: colors.text }]}>Roadmap</Text>
       <Text style={[styles.body, { color: colors.muted }]}>
-        • FTMS Bluetooth control (dev build){'\n'}
-        • iOS Live Activity for movie-friendly glanceable status{'\n'}
-        • Apple Watch companion{'\n'}
-        • Apple Health workout export
+        • FTMS Bluetooth control (dev build){'\n'}• iOS Live Activity for movie-friendly glanceable
+        status{'\n'}• Apple Watch companion{'\n'}• Apple Health workout export
       </Text>
 
       <Text style={[styles.section, { color: colors.text }]}>JSON import format</Text>
-      <Text style={[styles.code, { color: colors.text, backgroundColor: colors.card, borderColor: colors.border }]}>
+      <Text
+        style={[
+          styles.code,
+          { color: colors.text, backgroundColor: colors.card, borderColor: colors.border },
+        ]}
+      >
         {`{
   "programs": [{
     "name": "My Program",

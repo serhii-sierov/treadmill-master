@@ -1,7 +1,7 @@
-import * as SQLite from "expo-sqlite";
+import * as SQLite from 'expo-sqlite';
 
-import { runMigrations } from "@/core/database/migrations";
-import { DATABASE_NAME, SCHEMA_SQL } from "@/core/database/schema";
+import { runMigrations } from '@/core/database/migrations';
+import { DATABASE_NAME, SCHEMA_SQL } from '@/core/database/schema';
 
 let databasePromise: Promise<SQLite.SQLiteDatabase> | null = null;
 

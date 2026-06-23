@@ -30,7 +30,11 @@ export function treadmillTargetsDifferFromPlan(
   );
 }
 
-function formatTargetPair(speedKmh: number, inclinePercent: number, inclineUnit: InclineUnit): string {
+function formatTargetPair(
+  speedKmh: number,
+  inclinePercent: number,
+  inclineUnit: InclineUnit,
+): string {
   return `${formatSpeed(speedKmh)} · incline ${formatIncline(inclinePercent, inclineUnit)}`;
 }
 
@@ -60,7 +64,9 @@ export function formatSessionLogSegmentLine(
     return plan;
   }
 
-  if (!targetsDiffer(plannedSpeedKmh, plannedInclinePercent, actualSpeedKmh, actualInclinePercent)) {
+  if (
+    !targetsDiffer(plannedSpeedKmh, plannedInclinePercent, actualSpeedKmh, actualInclinePercent)
+  ) {
     return plan;
   }
 
@@ -76,7 +82,10 @@ export function formatSegmentTargetsWithActual(
 ): string {
   const plan = formatTargetPair(planSpeedKmh, planInclinePercent, inclineUnit);
 
-  if (!treadmill.connected || !treadmillTargetsDifferFromPlan(planSpeedKmh, planInclinePercent, treadmill)) {
+  if (
+    !treadmill.connected ||
+    !treadmillTargetsDifferFromPlan(planSpeedKmh, planInclinePercent, treadmill)
+  ) {
     return plan;
   }
 

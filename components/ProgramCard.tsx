@@ -31,7 +31,8 @@ export function ProgramCard(props: Readonly<ProgramCardProps>) {
           borderColor: selected ? colors.tint : colors.border,
           opacity: pressed ? 0.9 : 1,
         },
-      ]}>
+      ]}
+    >
       <View style={styles.header}>
         <View style={styles.titleBlock}>
           <Text style={[styles.title, { color: colors.text }]}>{program.name}</Text>
@@ -56,7 +57,8 @@ export function ProgramCard(props: Readonly<ProgramCardProps>) {
               style={[
                 styles.quickStartButton,
                 { backgroundColor: colors.tint, borderColor: colors.tint },
-              ]}>
+              ]}
+            >
               <SymbolView
                 name={{ ios: 'chevron.right', android: 'chevron_right', web: 'chevron_right' }}
                 size={18}

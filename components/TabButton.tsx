@@ -20,7 +20,8 @@ export function TabButton(props: Readonly<TabButtonProps>) {
         active
           ? { backgroundColor: colors.tintMuted, borderColor: colors.tint }
           : { borderColor: 'transparent' },
-      ]}>
+      ]}
+    >
       <Text style={[styles.tabLabel, { color: active ? colors.tint : colors.muted }]}>{label}</Text>
     </Pressable>
   );

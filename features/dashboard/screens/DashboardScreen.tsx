@@ -52,10 +52,7 @@ export function DashboardScreen() {
           text: 'Delete',
           style: 'destructive',
           onPress: () => {
-            fireAndForgetAlert(
-              deleteSession(session.id).then(refreshStats),
-              'Delete failed',
-            );
+            fireAndForgetAlert(deleteSession(session.id).then(refreshStats), 'Delete failed');
           },
         },
       ],
@@ -73,7 +70,8 @@ export function DashboardScreen() {
   return (
     <ScrollView
       style={{ backgroundColor: colors.background }}
-      contentContainerStyle={styles.content}>
+      contentContainerStyle={styles.content}
+    >
       <Text style={[styles.heading, { color: colors.text }]}>Your progress</Text>
       <Text style={[styles.subheading, { color: colors.muted }]}>
         Track workouts while you watch movies — stats stay on your phone.
@@ -111,9 +109,15 @@ export function DashboardScreen() {
           {stats.topPrograms.map((program) => (
             <View
               key={program.programId}
-              style={[styles.rankCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+              style={[
+                styles.rankCard,
+                { backgroundColor: colors.card, borderColor: colors.border },
+              ]}
+            >
               <View style={styles.rankMain}>
-                <Text style={[styles.rankTitle, { color: colors.text }]}>{program.programName}</Text>
+                <Text style={[styles.rankTitle, { color: colors.text }]}>
+                  {program.programName}
+                </Text>
                 <Text style={[styles.rankMeta, { color: colors.muted }]}>
                   {program.sessionCount} workouts · {program.totalMinutes} min
                 </Text>
@@ -125,7 +129,9 @@ export function DashboardScreen() {
 
       <Text style={[styles.sectionTitle, { color: colors.text }]}>Recent workouts</Text>
       {stats.recentSessions.length === 0 ? (
-        <View style={[styles.emptyCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <View
+          style={[styles.emptyCard, { backgroundColor: colors.card, borderColor: colors.border }]}
+        >
           <Text style={[styles.emptyTitle, { color: colors.text }]}>No workouts yet</Text>
           <Text style={[styles.emptyBody, { color: colors.muted }]}>
             Pick a program and start your first session from the Workout tab.
@@ -135,14 +141,24 @@ export function DashboardScreen() {
         stats.recentSessions.map((session) => (
           <View
             key={session.id}
-            style={[styles.sessionCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            style={[
+              styles.sessionCard,
+              { backgroundColor: colors.card, borderColor: colors.border },
+            ]}
+          >
             <Pressable
               onPress={() =>
-                router.push({ pathname: '/session/[id]', params: { id: session.id } } as unknown as Href)
+                router.push({
+                  pathname: '/session/[id]',
+                  params: { id: session.id },
+                } as unknown as Href)
               }
-              style={styles.sessionMain}>
+              style={styles.sessionMain}
+            >
               <View>
-                <Text style={[styles.sessionTitle, { color: colors.text }]}>{session.programName}</Text>
+                <Text style={[styles.sessionTitle, { color: colors.text }]}>
+                  {session.programName}
+                </Text>
                 <Text style={[styles.sessionMeta, { color: colors.muted }]}>
                   {new Date(session.startedAt).toLocaleDateString()}
                   {session.segmentLog.length > 0 ? ` · ${session.segmentLog.length} segments` : ''}
@@ -162,7 +178,8 @@ export function DashboardScreen() {
               hitSlop={8}
               accessibilityLabel={`Delete ${session.programName} workout`}
               accessibilityRole="button"
-              style={styles.deleteButton}>
+              style={styles.deleteButton}
+            >
               <SymbolView
                 name={{ ios: 'trash', android: 'delete', web: 'delete' }}
                 size={18}

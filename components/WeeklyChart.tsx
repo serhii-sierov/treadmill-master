@@ -31,7 +31,9 @@ export function WeeklyChart(props: Readonly<WeeklyChartProps>) {
 
           return (
             <View key={day.date} style={styles.barColumn}>
-              <Text style={[styles.barValue, { color: colors.muted }]}>{value > 0 ? value : ''}</Text>
+              <Text style={[styles.barValue, { color: colors.muted }]}>
+                {value > 0 ? value : ''}
+              </Text>
               <View style={[styles.barTrack, { backgroundColor: colors.border }]}>
                 <View
                   style={[

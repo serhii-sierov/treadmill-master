@@ -34,17 +34,29 @@ export function WorkoutHeroCard(props: Readonly<WorkoutHeroCardProps>) {
   } = props;
 
   if (workout?.isActive) {
-    const label = workout.isInterrupted ? 'Interrupted' : workout.isPaused ? 'Paused' : 'Now playing';
-    const labelColor = workout.isInterrupted ? colors.danger : workout.isPaused ? colors.muted : colors.tint;
+    const label = workout.isInterrupted
+      ? 'Interrupted'
+      : workout.isPaused
+        ? 'Paused'
+        : 'Now playing';
+    const labelColor = workout.isInterrupted
+      ? colors.danger
+      : workout.isPaused
+        ? colors.muted
+        : colors.tint;
 
     return (
-      <View style={[styles.heroCard, { backgroundColor: colors.tintMuted, borderColor: colors.tint }]}>
+      <View
+        style={[styles.heroCard, { backgroundColor: colors.tintMuted, borderColor: colors.tint }]}
+      >
         <Text style={[styles.heroLabel, { color: labelColor }]}>{label}</Text>
         <Text style={[styles.heroTitle, { color: colors.text }]}>{workout.programName}</Text>
         <Text style={[styles.heroSegment, { color: colors.text }]}>
           {currentSegment?.label ?? `Segment ${workout.segmentIndex + 1}`}
         </Text>
-        <Text style={[styles.heroTimer, { color: colors.text }]}>{formatDuration(segmentRemaining)}</Text>
+        <Text style={[styles.heroTimer, { color: colors.text }]}>
+          {formatDuration(segmentRemaining)}
+        </Text>
         <Text style={[styles.heroMeta, { color: colors.muted }]}>
           {currentSegment
             ? formatSegmentTargetsWithActual(
@@ -62,10 +74,16 @@ export function WorkoutHeroCard(props: Readonly<WorkoutHeroCardProps>) {
         ) : null}
 
         <View style={[styles.progressTrack, { backgroundColor: colors.border }]}>
-          <View style={[styles.progressFill, { width: `${progressPercent}%`, backgroundColor: colors.tint }]} />
+          <View
+            style={[
+              styles.progressFill,
+              { width: `${progressPercent}%`, backgroundColor: colors.tint },
+            ]}
+          />
         </View>
         <Text style={[styles.progressLabel, { color: colors.muted }]}>
-          {Math.round(progressPercent)}% complete · {formatDuration(workout.totalElapsedSeconds)} elapsed
+          {Math.round(progressPercent)}% complete · {formatDuration(workout.totalElapsedSeconds)}{' '}
+          elapsed
         </Text>
       </View>
     );

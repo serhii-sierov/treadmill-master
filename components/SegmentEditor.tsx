@@ -32,7 +32,10 @@ export function SegmentEditor(props: Readonly<SegmentEditorProps>) {
   const colors = Colors[colorScheme];
   const labelFieldRef = useRef<ViewType>(null);
 
-  const updateNumber = (field: 'durationSeconds' | 'speedKmh' | 'inclinePercent', value: string) => {
+  const updateNumber = (
+    field: 'durationSeconds' | 'speedKmh' | 'inclinePercent',
+    value: string,
+  ) => {
     const parsed = Number(value.replace(',', '.'));
     if (Number.isNaN(parsed)) {
       return;

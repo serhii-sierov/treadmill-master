@@ -4,11 +4,7 @@ import { getMeta, setMeta } from '@/core/database';
 import { fireAndForget } from '@/utils/fire-and-forget';
 import { BleCommandQueue } from '@/core/treadmill/adapters/ftms/command-queue';
 import { hexFromBase64, logFtms } from '@/core/treadmill/adapters/ftms/ftms-debug';
-import {
-  base64ToBytes,
-  readSint16Le,
-  readUint16Le,
-} from '@/core/treadmill/adapters/ftms/encoding';
+import { base64ToBytes, readSint16Le, readUint16Le } from '@/core/treadmill/adapters/ftms/encoding';
 import {
   BLE_COMMAND_INTERVAL_MS,
   BLE_SCAN_DURATION_MS,
@@ -90,24 +86,28 @@ export class FtmsTreadmillAdapter implements TreadmillAdapter {
         resolve([...discovered.values()].sort((a, b) => (b.rssi ?? -999) - (a.rssi ?? -999)));
       }, durationMs);
 
-      this.manager.startDeviceScan([FTMS_SERVICE_UUID], { allowDuplicates: false }, (error, device) => {
-        if (error) {
-          clearTimeout(timeout);
-          this.manager.stopDeviceScan().catch(() => undefined);
-          reject(error);
-          return;
-        }
+      this.manager.startDeviceScan(
+        [FTMS_SERVICE_UUID],
+        { allowDuplicates: false },
+        (error, device) => {
+          if (error) {
+            clearTimeout(timeout);
+            this.manager.stopDeviceScan().catch(() => undefined);
+            reject(error);
+            return;
+          }
 
-        if (!device) {
-          return;
-        }
+          if (!device) {
+            return;
+          }
 
-        discovered.set(device.id, {
-          id: device.id,
-          name: device.name ?? device.localName ?? 'Unknown treadmill',
-          rssi: device.rssi,
-        });
-      });
+          discovered.set(device.id, {
+            id: device.id,
+            name: device.name ?? device.localName ?? 'Unknown treadmill',
+            rssi: device.rssi,
+          });
+        },
+      );
     });
   }
 
@@ -257,7 +257,12 @@ export class FtmsTreadmillAdapter implements TreadmillAdapter {
         await this.writeControl(buildSetInclineCommand(0));
         this.sessionPhase = 'idle';
         this.trainingSessionActive = false;
-        this.updateState({ isRunning: false, speedKmh: 0, inclinePercent: 0, ftmsSessionPhase: 'idle' });
+        this.updateState({
+          isRunning: false,
+          speedKmh: 0,
+          inclinePercent: 0,
+          ftmsSessionPhase: 'idle',
+        });
       });
     } finally {
       this.endSuppressStopReason();

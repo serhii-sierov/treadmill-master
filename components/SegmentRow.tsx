@@ -29,7 +29,8 @@ export function SegmentRow(props: Readonly<SegmentRowProps>) {
           backgroundColor: active ? colors.tintMuted : colors.card,
           borderColor: active ? colors.tint : colors.border,
         },
-      ]}>
+      ]}
+    >
       <View style={styles.left}>
         <Text style={[styles.index, { color: colors.muted }]}>#{index + 1}</Text>
         <Text style={[styles.label, { color: colors.text }]}>
@@ -37,7 +38,9 @@ export function SegmentRow(props: Readonly<SegmentRowProps>) {
         </Text>
       </View>
       <View style={styles.metrics}>
-        <Text style={[styles.metric, { color: colors.text }]}>{formatDuration(segment.durationSeconds)}</Text>
+        <Text style={[styles.metric, { color: colors.text }]}>
+          {formatDuration(segment.durationSeconds)}
+        </Text>
         <Text style={[styles.metric, { color: colors.muted }]}>
           {treadmill
             ? formatSegmentTargetsWithActual(

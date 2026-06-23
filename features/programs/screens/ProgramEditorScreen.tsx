@@ -132,80 +132,85 @@ export function ProgramEditorScreen(props: Readonly<ProgramEditorScreenProps>) {
       contentContainerStyle={[
         styles.content,
         { paddingBottom: keyboardHeight > 0 ? keyboardHeight + 16 : insets.bottom + 24 },
-      ]}>
+      ]}
+    >
       <View ref={contentRef} collapsable={false} style={styles.form}>
-          <Text style={[styles.label, { color: colors.muted }]}>Program name</Text>
-          <View ref={nameFieldRef} collapsable={false}>
-            <TextInput
-              value={draft.name}
-              onChangeText={(name) => setDraft({ ...draft, name })}
-              onFocus={() => {
-                if (nameFieldRef.current) {
-                  scrollFieldIntoView(nameFieldRef.current);
-                }
-              }}
-              style={[
-                styles.input,
-                { color: colors.text, borderColor: colors.border, backgroundColor: colors.card },
-              ]}
-            />
-          </View>
-
-          <Text style={[styles.label, { color: colors.muted }]}>Description</Text>
-          <View ref={descriptionFieldRef} collapsable={false}>
-            <TextInput
-              value={draft.description ?? ''}
-              onChangeText={(description) => setDraft({ ...draft, description })}
-              onFocus={() => {
-                if (descriptionFieldRef.current) {
-                  scrollFieldIntoView(descriptionFieldRef.current);
-                }
-              }}
-              multiline
-              style={[
-                styles.textArea,
-                { color: colors.text, borderColor: colors.border, backgroundColor: colors.card },
-              ]}
-            />
-          </View>
-
-          <Text style={[styles.meta, { color: colors.muted }]}>
-            {draft.segments.length} segments · {formatDuration(totalDuration)} total
-          </Text>
-
-          {draft.segments.map((segment, index) => (
-            <SegmentEditor
-              key={segment.id}
-              segment={segment}
-              index={index}
-              inclineUnit={inclineUnit}
-              canRemove={draft.segments.length > 1}
-              onFieldFocus={scrollFieldIntoView}
-              onChange={(nextSegment) => {
-                const segments = draft.segments.map((item, itemIndex) =>
-                  itemIndex === index ? nextSegment : item,
-                );
-                setDraft({ ...draft, segments });
-              }}
-              onRemove={() => {
-                const segments = draft.segments.filter((_, itemIndex) => itemIndex !== index);
-                setDraft({ ...draft, segments });
-              }}
-            />
-          ))}
-
-          <Pressable
-            onPress={() => setDraft({ ...draft, segments: [...draft.segments, createEmptySegment()] })}
-            style={[styles.addButton, { borderColor: colors.border, backgroundColor: colors.card }]}>
-            <Text style={[styles.addLabel, { color: colors.tint }]}>+ Add segment</Text>
-          </Pressable>
-
-          <Pressable
-            onPress={() => fireAndForgetAlert(handleSave(), 'Save failed')}
-            style={[styles.saveButton, { backgroundColor: colors.tint }]}>
-            <Text style={styles.saveLabel}>Save program</Text>
-          </Pressable>
+        <Text style={[styles.label, { color: colors.muted }]}>Program name</Text>
+        <View ref={nameFieldRef} collapsable={false}>
+          <TextInput
+            value={draft.name}
+            onChangeText={(name) => setDraft({ ...draft, name })}
+            onFocus={() => {
+              if (nameFieldRef.current) {
+                scrollFieldIntoView(nameFieldRef.current);
+              }
+            }}
+            style={[
+              styles.input,
+              { color: colors.text, borderColor: colors.border, backgroundColor: colors.card },
+            ]}
+          />
         </View>
+
+        <Text style={[styles.label, { color: colors.muted }]}>Description</Text>
+        <View ref={descriptionFieldRef} collapsable={false}>
+          <TextInput
+            value={draft.description ?? ''}
+            onChangeText={(description) => setDraft({ ...draft, description })}
+            onFocus={() => {
+              if (descriptionFieldRef.current) {
+                scrollFieldIntoView(descriptionFieldRef.current);
+              }
+            }}
+            multiline
+            style={[
+              styles.textArea,
+              { color: colors.text, borderColor: colors.border, backgroundColor: colors.card },
+            ]}
+          />
+        </View>
+
+        <Text style={[styles.meta, { color: colors.muted }]}>
+          {draft.segments.length} segments · {formatDuration(totalDuration)} total
+        </Text>
+
+        {draft.segments.map((segment, index) => (
+          <SegmentEditor
+            key={segment.id}
+            segment={segment}
+            index={index}
+            inclineUnit={inclineUnit}
+            canRemove={draft.segments.length > 1}
+            onFieldFocus={scrollFieldIntoView}
+            onChange={(nextSegment) => {
+              const segments = draft.segments.map((item, itemIndex) =>
+                itemIndex === index ? nextSegment : item,
+              );
+              setDraft({ ...draft, segments });
+            }}
+            onRemove={() => {
+              const segments = draft.segments.filter((_, itemIndex) => itemIndex !== index);
+              setDraft({ ...draft, segments });
+            }}
+          />
+        ))}
+
+        <Pressable
+          onPress={() =>
+            setDraft({ ...draft, segments: [...draft.segments, createEmptySegment()] })
+          }
+          style={[styles.addButton, { borderColor: colors.border, backgroundColor: colors.card }]}
+        >
+          <Text style={[styles.addLabel, { color: colors.tint }]}>+ Add segment</Text>
+        </Pressable>
+
+        <Pressable
+          onPress={() => fireAndForgetAlert(handleSave(), 'Save failed')}
+          style={[styles.saveButton, { backgroundColor: colors.tint }]}
+        >
+          <Text style={styles.saveLabel}>Save program</Text>
+        </Pressable>
+      </View>
     </ScrollView>
   );
 }

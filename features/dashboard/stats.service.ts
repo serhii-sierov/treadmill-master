@@ -1,9 +1,5 @@
 import { ensureDatabaseReady, getDatabase } from '@/core/database';
-import type {
-  DashboardStats,
-  TopProgramStat,
-  WeeklyDayStat,
-} from '@/features/dashboard/types';
+import type { DashboardStats, TopProgramStat, WeeklyDayStat } from '@/features/dashboard/types';
 import { mapSessionRow, type SessionRow } from '@/features/workout/mappers';
 
 type TotalsRow = {
@@ -40,8 +36,9 @@ export async function loadDashboardStats(): Promise<DashboardStats> {
   await ensureDatabaseReady();
   const db = await getDatabase();
 
-  const [totals, weeklyTotals, dailyRows, topPrograms, recentSessions, programCount] = await Promise.all([
-    db.getFirstAsync<TotalsRow>(`
+  const [totals, weeklyTotals, dailyRows, topPrograms, recentSessions, programCount] =
+    await Promise.all([
+      db.getFirstAsync<TotalsRow>(`
       SELECT
         COUNT(*) AS total_workouts,
         SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END) AS completed_workouts,
@@ -50,7 +47,7 @@ export async function loadDashboardStats(): Promise<DashboardStats> {
         SUM(calories) AS total_calories
       FROM sessions
     `),
-    db.getFirstAsync<WeeklyTotalsRow>(`
+      db.getFirstAsync<WeeklyTotalsRow>(`
       SELECT
         COUNT(*) AS workouts,
         SUM(CASE WHEN completed = 1 THEN 1 ELSE 0 END) AS completed_workouts,
@@ -60,7 +57,7 @@ export async function loadDashboardStats(): Promise<DashboardStats> {
       FROM sessions
       WHERE started_at >= datetime('now', '-6 days', 'start of day')
     `),
-    db.getAllAsync<DailyRow>(`
+      db.getAllAsync<DailyRow>(`
       SELECT
         date(started_at) AS day,
         COUNT(*) AS workouts,
@@ -71,7 +68,7 @@ export async function loadDashboardStats(): Promise<DashboardStats> {
       GROUP BY date(started_at)
       ORDER BY day ASC
     `),
-    db.getAllAsync<TopProgramRow>(`
+      db.getAllAsync<TopProgramRow>(`
       SELECT
         program_id,
         program_name,
@@ -82,13 +79,13 @@ export async function loadDashboardStats(): Promise<DashboardStats> {
       ORDER BY session_count DESC, total_seconds DESC
       LIMIT 5
     `),
-    db.getAllAsync<SessionRow>(`
+      db.getAllAsync<SessionRow>(`
       SELECT * FROM sessions
       ORDER BY started_at DESC
       LIMIT 5
     `),
-    db.getFirstAsync<{ total: number }>('SELECT COUNT(*) AS total FROM programs'),
-  ]);
+      db.getFirstAsync<{ total: number }>('SELECT COUNT(*) AS total FROM programs'),
+    ]);
 
   const weeklyDays = buildWeeklyDays(dailyRows);
 

@@ -40,13 +40,12 @@ function shouldUseMockTreadmill(): boolean {
  * Picks the active treadmill adapter. Add new device types here
  * (e.g. proprietary SDK) alongside mock and FTMS.
  */
-export function createTreadmillAdapter(): TreadmillAdapter {
+export async function createTreadmillAdapter(): Promise<TreadmillAdapter> {
   if (shouldUseMockTreadmill()) {
     return new MockTreadmillAdapter();
   }
 
-  const { FtmsTreadmillAdapter } =
-    require('@/core/treadmill/adapters/ftms/ftms.adapter') as typeof import('@/core/treadmill/adapters/ftms/ftms.adapter');
+  const { FtmsTreadmillAdapter } = await import('@/core/treadmill/adapters/ftms/ftms.adapter');
   return new FtmsTreadmillAdapter();
 }
 

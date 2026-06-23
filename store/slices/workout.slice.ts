@@ -1,7 +1,7 @@
 import type { StateCreator } from "zustand";
 
 import { healthService } from "@/core/health";
-import { treadmillAdapter } from "@/core/treadmill";
+import { getTreadmillAdapter } from "@/core/treadmill";
 import { logFtms } from '@/core/treadmill/adapters/ftms/ftms-debug';
 import {
   applySegmentToTreadmill,
@@ -54,7 +54,7 @@ export const createWorkoutSlice: StateCreator<
       throw new Error("Connect your treadmill before starting a workout.");
     }
 
-    const treadmillSnapshot = treadmillAdapter.getState();
+    const treadmillSnapshot = getTreadmillAdapter().getState();
     await startSegmentOnTreadmill(firstSegment);
 
     const workout: WorkoutProgress = {
@@ -79,7 +79,7 @@ export const createWorkoutSlice: StateCreator<
     set({
       workout,
       selectedProgramId: programId,
-      treadmill: treadmillAdapter.getState(),
+      treadmill: getTreadmillAdapter().getState(),
     });
 
     startWorkoutTimer(get);
@@ -91,11 +91,11 @@ export const createWorkoutSlice: StateCreator<
       return;
     }
 
-    await treadmillAdapter.pause();
+    await getTreadmillAdapter().pause();
     resetBeltStopTracking();
     set({
       workout: { ...workout, isPaused: true },
-      treadmill: treadmillAdapter.getState(),
+      treadmill: getTreadmillAdapter().getState(),
     });
     stopWorkoutTimer();
   },
@@ -127,7 +127,7 @@ export const createWorkoutSlice: StateCreator<
 
     await startSegmentOnTreadmill(segment, { forceColdStart: wasSafetyKey });
     resetBeltStopTracking();
-    const treadmillSnapshot = treadmillAdapter.getState();
+    const treadmillSnapshot = getTreadmillAdapter().getState();
     set({
       workout: reAnchorSessionMetrics(
         {
@@ -154,7 +154,7 @@ export const createWorkoutSlice: StateCreator<
 
     stopWorkoutTimer();
     resetBeltStopTracking();
-    await treadmillAdapter.stop();
+    await getTreadmillAdapter().stop();
 
     const program = get().programs.find(
       (item) => item.id === workout.programId,
@@ -186,7 +186,7 @@ export const createWorkoutSlice: StateCreator<
     set({
       sessions,
       workout: null,
-      treadmill: treadmillAdapter.getState(),
+      treadmill: getTreadmillAdapter().getState(),
     });
     await insertSession(session);
     await healthService.saveWorkout(session);
@@ -308,7 +308,7 @@ export const createWorkoutSlice: StateCreator<
           totalElapsedSeconds: nextTotalElapsed,
           beltCheckGraceUntil: Date.now() + BELT_SEGMENT_GRACE_MS,
         },
-        treadmill: treadmillAdapter.getState(),
+        treadmill: getTreadmillAdapter().getState(),
       });
       return;
     }
@@ -319,7 +319,7 @@ export const createWorkoutSlice: StateCreator<
         segmentElapsedSeconds: nextSegmentElapsed,
         totalElapsedSeconds: nextTotalElapsed,
       },
-      treadmill: treadmillAdapter.getState(),
+      treadmill: getTreadmillAdapter().getState(),
     });
   },
 
@@ -396,7 +396,7 @@ async function resumeWorkoutWithSegment(
   }
 
   resetBeltStopTracking();
-  const treadmillSnapshot = treadmillAdapter.getState();
+  const treadmillSnapshot = getTreadmillAdapter().getState();
   setState({
     workout: reAnchorSessionMetrics(
       {
@@ -442,7 +442,7 @@ async function navigateToSegment(
       isPaused: workout.isPaused,
       beltCheckGraceUntil: Date.now() + BELT_SEGMENT_GRACE_MS,
     },
-    treadmill: treadmillAdapter.getState(),
+    treadmill: getTreadmillAdapter().getState(),
   });
 }
 
@@ -463,7 +463,7 @@ function applyWorkoutInterruption(
     treadmill,
   });
   if (nextWorkout.interruptionReason === 'safety_key') {
-    treadmillAdapter.resetTrainingSessionAfterEmergency();
+    getTreadmillAdapter().resetTrainingSessionAfterEmergency();
   }
 }
 

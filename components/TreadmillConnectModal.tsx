@@ -5,8 +5,8 @@ import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import {
   getMockTreadmillReasonMessage,
+  getTreadmillAdapter,
   getTreadmillModeDiagnostics,
-  treadmillAdapter,
 } from '@/core/treadmill';
 import type { DiscoveredTreadmill } from '@/core/treadmill/types';
 import { fireAndForget } from '@/utils/fire-and-forget';
@@ -46,7 +46,7 @@ export function TreadmillConnectModal(props: Readonly<TreadmillConnectModalProps
     setDevices([]);
 
     try {
-      const found = await treadmillAdapter.scan();
+      const found = await getTreadmillAdapter().scan();
       setDevices(found);
       if (found.length === 0) {
         setError(

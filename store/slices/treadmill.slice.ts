@@ -1,17 +1,28 @@
 import type { StateCreator } from 'zustand';
 
-import { treadmillAdapter } from '@/core/treadmill';
+import { getTreadmillAdapter } from '@/core/treadmill';
+import type { TreadmillState } from '@/core/treadmill/types';
 import type { AppState, TreadmillSlice } from '@/store/types';
 
+export const initialTreadmillState: TreadmillState = {
+  connected: false,
+  mode: 'mock',
+  speedKmh: 0,
+  inclinePercent: 0,
+  isRunning: false,
+  distanceKm: 0,
+  calories: 0,
+};
+
 export const createTreadmillSlice: StateCreator<AppState, [], [], TreadmillSlice> = (set) => ({
-  treadmill: treadmillAdapter.getState(),
+  treadmill: initialTreadmillState,
   lastConnectedDeviceName: null,
 
-  scanTreadmills: async () => treadmillAdapter.scan(),
+  scanTreadmills: async () => getTreadmillAdapter().scan(),
 
   connectTreadmill: async (deviceId) => {
-    await treadmillAdapter.connect(deviceId);
-    const treadmill = treadmillAdapter.getState();
+    await getTreadmillAdapter().connect(deviceId);
+    const treadmill = getTreadmillAdapter().getState();
     set({
       treadmill,
       lastConnectedDeviceName: treadmill.deviceName ?? null,
@@ -19,8 +30,8 @@ export const createTreadmillSlice: StateCreator<AppState, [], [], TreadmillSlice
   },
 
   reconnectTreadmill: async () => {
-    await treadmillAdapter.reconnectLast();
-    const treadmill = treadmillAdapter.getState();
+    await getTreadmillAdapter().reconnectLast();
+    const treadmill = getTreadmillAdapter().getState();
     set({
       treadmill,
       lastConnectedDeviceName: treadmill.deviceName ?? null,
@@ -28,15 +39,15 @@ export const createTreadmillSlice: StateCreator<AppState, [], [], TreadmillSlice
   },
 
   disconnectTreadmill: async () => {
-    await treadmillAdapter.disconnect();
-    set({ treadmill: treadmillAdapter.getState() });
+    await getTreadmillAdapter().disconnect();
+    set({ treadmill: getTreadmillAdapter().getState() });
   },
 });
 
 export function syncTreadmillStateToStore(
   setState: (partial: Pick<TreadmillSlice, 'treadmill'>) => void,
 ): () => void {
-  return treadmillAdapter.subscribe((treadmill) => {
+  return getTreadmillAdapter().subscribe((treadmill) => {
     setState({ treadmill });
   });
 }
